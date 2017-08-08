@@ -1,0 +1,70 @@
+#quizlet-auth {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  width: 60%;
+}
+
+#quizlet-api input, #quizlet-auth input {
+  /*margin-left: 1em;*/
+  background-color: #4d90fe;
+  background-image: -webkit-linear-gradient(top,#4d90fe,#4787ed);
+  border: 1px solid #3079ed;
+  color: #fff;
+  min-width: 54px;
+  height: 29px;
+  line-height: 27px;
+}
+
+#quizlet-api input {
+  float: left; 
+}
+
+#reset-chrome-storage {
+  display: block;
+  text-align: right;
+  position: absolute;
+  bottom: 6px;
+  right: 12px;
+}
+
+body {
+  width: 200px;
+  height: 150px;
+  margin: 5px;
+}
+
+.container {
+  border: solid #F5F5F5 2px;
+  border-radius: 5px;
+  height: 100%;
+}
+
+.wrapper {
+  margin-left: auto;
+  margin-right: auto;
+  width: 40px;
+  display: block; 
+  margin-top: 20px;
+  text-align: center;
+}
+.loading {
+  text-align: center;
+}
+
+#loader {
+    border: 10px solid #f3f3f3; /* Light grey */
+    border-top: 10px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 0.5s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+

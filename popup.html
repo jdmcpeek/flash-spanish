@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flash Spanish</title>
+  <script src="jquery-3.2.1.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="./style.css">
+</head>
+<body>
+
+<div class='container'>
+  <div id='quizlet-auth'>
+    <input type='button' value='Authorize Quizlet' class='jfk-button jfk-button-action' />
+  </div>
+
+  <div class="loading" style="display: none;">
+    <div class='wrapper'>
+      <div id="loader"></div>
+    </div>
+    <p>Loading...</p>
+  </div>
+
+  <a id="reset-chrome-storage" href="#">Log out</a>
+</div>
+
+
+<script src="helpers.js"></script>
+
+</body>
+</html>

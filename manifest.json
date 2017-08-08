@@ -1,0 +1,37 @@
+{
+  "manifest_version": 2,
+  "name": "Flash Spanish",
+  "description": "Translates words and uploads to Quizlet",
+  "version": "1.0",
+  "web_accessible_resources": [
+    "style/double-rainbow.css",
+    "background.html",
+    "popup.html",
+    "auth.js"
+  ],
+  "browser_action": {
+    "default_title": "Flash Spanish",      // optional; shown in tooltip
+    "default_popup": "popup.html"        // optional
+  },
+  "permissions": [
+    "identity", "storage", "tabs", "background", "webRequest", "management",
+    "https://quizlet.com/authorize*",
+    "https://api.quizlet.com/oauth/token*",
+    "https://api.quizlet.com/2.0/",
+    "https://api.quizlet.com/2.0/*",
+    "http://*/",
+    "https://*/",
+    "http://www.example.com/",
+    "http://code.jquery.com/jquery-3.2.1.min.js"
+  ],
+  "background": {
+    "scripts": ["jquery-3.2.1.min.js", "background.js", "auth.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*", "http://code.jquery.com/jquery-3.2.1.min.js"],
+      "js": ["jquery-3.2.1.min.js", "translate.js"], 
+      "run_at": "document_end"
+    }
+  ]
+}
