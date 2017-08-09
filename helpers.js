@@ -1,5 +1,17 @@
 console.log("helpers.js");
 
+// AUTHORIZATION ENTRYPOINT 
+$('#quizlet-auth>input').click(function() {
+  console.log("clicked");
+  // hide authorize button and replace with "loading..."
+  $('#quizlet-auth').hide();
+  $('.loading').show();
+  chrome.runtime.sendMessage({action: "authorize"}, function(response) {
+    console.log("got response from authorize, helpers.js", response);
+  });
+
+});
+
 
 function get_access_token_from_storage() {
   console.log("getting access token from storage...");
@@ -25,21 +37,15 @@ function get_access_token_from_storage() {
 get_access_token_from_storage();
 
 
-$('#quizlet-auth>input').click(function() {
-  console.log("clicked");
-  // hide authorize button and replace with "loading..."
-  $('#quizlet-auth').hide();
-  $('.loading').show();
-  chrome.runtime.sendMessage({action: "authorize"});
-});
 
-
-// clear storage function...
+// LOGOUT
 $('#reset-chrome-storage').click(function() {
   console.log('resetting storage...');
   chrome.storage.sync.clear(function(data) {
     console.log('storage cleared.');
     chrome.browserAction.setPopup({popup: "popup.html"});
+
+    // tells background.js to refresh the access token for logout
     chrome.runtime.sendMessage({action: "refresh_access_token"});
 
     $('#authorized,#quizlet-auth').hide();

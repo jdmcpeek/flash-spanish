@@ -4,11 +4,50 @@
 
 
 // actual DOM insertions
-var quizlet_button = "<div id='quizlet-api'> \
+var quizlet_button = "<div id='quizlet-api' style='display:none;'> \
                         <input type='button' value='Add to Quizlet' \
                         class='jfk-button jfk-button-action' /></div>";
 
 $(quizlet_button).insertAfter($('#gt-appname'));
+
+
+chrome.runtime.onMessage.addListener(
+function(request, sender, sendResponse) {
+  console.log(sender.tab ?
+              "from a content script:" + sender.tab.url :
+              "from the extension");
+  console.log("assing myself nightly right now");
+  console.log(request);
+  if (request.action == "refresh_access_token") {
+    get_access_token_from_storage()
+      .then((response) => {
+        sendResponse("refreshed this shit");
+      });
+  }
+  return true;
+});
+
+function get_access_token_from_storage() {
+  return new Promise(function(resolve, reject) {
+    console.log("getting access token from storage...");
+    chrome.storage.sync.get("quizlet_access_token", function(res) {
+      quizlet_token = res.quizlet_access_token;
+      console.log(quizlet_token);
+
+      if (typeof quizlet_token != 'undefined') {
+        $('#quizlet-api').show();
+      } else {
+        console.log("none exists.");
+        $('#quizlet-api').hide();
+      }
+
+      resolve(true);
+    });
+  }); // end promise
+}
+
+// initialize 
+get_access_token_from_storage();
 
 
 // check if Google Translate extension is in use

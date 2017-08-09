@@ -1,5 +1,7 @@
 console.log("auth.js");
-// https://jllbbbnhefifnkkmbokcpijfglcjnebc.chromiumapp.org/
+
+// ACCESS TOKEN NOT NEEDED IN THIS FILE
+
 
 function get_redirect_url () {
   return chrome.identity.getRedirectURL();
@@ -76,7 +78,7 @@ function launch_chrome_webAuthFlow (client_id, state) {
 
 }
 
-
+// AUTHORIZATION ENTRYPOINT - received from helpers.js
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log(request + " in first addListender auth.js");
   if (request.action == "authorize") {
@@ -85,9 +87,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         console.log(data + " auth.js listener");
         console.log("auth complete.");
         chrome.browserAction.setPopup({popup: "authorized.html"});
+        // sendResponse({action: "authorization_complete"}); 
         location.reload();
       });
   }
+
+  return true; 
 });
 
 

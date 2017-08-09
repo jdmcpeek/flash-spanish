@@ -1,5 +1,9 @@
 console.log("background.js");
 
+// ACCESS TOKEN NEEDED IN THIS FILE - which is why we refresh
+
+
+
 
 function get_access_token_from_storage() {
   console.log("getting access token from storage...");
@@ -18,14 +22,22 @@ function get_access_token_from_storage() {
       chrome.browserAction.setPopup({popup: "popup.html"});
     }
   });
+  
+  // refresh browser UI to uncover the button
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    console.log("getting tabs...");
+    chrome.tabs.sendMessage(tabs[0].id, {action: "refresh_access_token"}, function(response) {
+      console.log("sent response");
+      console.log(response);
+    });
+  }); 
 }
 
-// initialize 
+// initialize - performed on every refresh
 get_access_token_from_storage();
 
 
 
-// this needs to be a long-term port for message passing....
 chrome.runtime.onMessage.addListener(
 function(request, sender, sendResponse) {
   console.log("in background.js listener");
@@ -35,7 +47,6 @@ function(request, sender, sendResponse) {
     get_access_token_from_storage();
   }
 
-  // console.log(ACCESS_TOKEN, USERNAME);
 
   if (UNAUTHORIZED) {
     if (request.action != "authorize") {
