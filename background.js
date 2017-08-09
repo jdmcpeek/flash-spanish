@@ -3,8 +3,6 @@ console.log("background.js");
 // ACCESS TOKEN NEEDED IN THIS FILE - which is why we refresh
 
 
-
-
 function get_access_token_from_storage() {
   console.log("getting access token from storage...");
   chrome.storage.sync.get("quizlet_access_token", function(res) {

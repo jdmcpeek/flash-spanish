@@ -4,10 +4,7 @@
   "description": "Translates words and uploads to Quizlet",
   "version": "1.0",
   "web_accessible_resources": [
-    "style/double-rainbow.css",
-    "background.html",
-    "popup.html",
-    "auth.js"
+    "help.html"
   ],
   "browser_action": {
     "default_title": "Flash Spanish",      // optional; shown in tooltip

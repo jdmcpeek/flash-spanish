@@ -20,6 +20,14 @@
   float: left; 
 }
 
+#help-link {
+  display: block;
+  text-align: left;
+  position: absolute;
+  bottom: 6px;
+  left: 12px;
+}
+
 #reset-chrome-storage {
   display: block;
   text-align: right;
@@ -30,7 +38,7 @@
 
 body {
   width: 200px;
-  height: 150px;
+  height: 90px;
   margin: 5px;
 }
 

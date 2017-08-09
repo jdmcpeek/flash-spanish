@@ -60,3 +60,19 @@ $('#reset-chrome-storage').click(function() {
 });  
 
 
+console.log("fuck you");
+// refresh browser UI to uncover the button
+chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+  console.log("getting tabs from helpers.js...");
+  var currentTab = tabs[0];
+  tabIndex = currentTab.index;
+}); 
+
+
+// popup tabs/links
+$('.help a:not(#back-button)').click(function() {
+  chrome.tabs.create({url: $(this).attr('href'), index: tabIndex + 1});
+  return false;
+})
+
+

@@ -24,6 +24,7 @@ function(request, sender, sendResponse) {
         sendResponse("refreshed this shit");
       });
   }
+
   return true;
 });
 
