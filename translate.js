@@ -31,15 +31,22 @@ function get_access_token_from_storage() {
     chrome.storage.sync.get("quizlet_access_token", function(res) {
       quizlet_token = res.quizlet_access_token;
       console.log(quizlet_token);
-
       if (typeof quizlet_token != 'undefined') {
         $('#quizlet-api').show();
       } else {
         console.log("none exists.");
         $('#quizlet-api').hide();
       }
-
       resolve(true);
+    });
+
+    chrome.storage.sync.get("user_language", function(res) {
+      if (res.user_language) {
+        USER_LANG = res.user_language;
+      } else {
+        USER_LANG = "en";
+      }
+      console.log("user lang", USER_LANG);
     });
   }); // end promise
 }
@@ -62,38 +69,23 @@ var observer = new MutationObserver(function(mutations) {
             if (hasClass) {
               console.log('element ".gtx-bubble" added');
               setTimeout(function() {
-                // element has class `MyClass`
+                // collect args...
                 var args = {};
-
                 var shadow = document.querySelector('.gtx-bubble').querySelector('#gtx-host').shadowRoot;
-
                 args['term'] = shadow.querySelectorAll('.gtx-body')[0].innerHTML;
                 args['definition'] = shadow.querySelectorAll('.gtx-body')[1].innerHTML;
                 args['term_lang'] = shadow.querySelector('.gtx-lang-selector').value;
                 args['target_lang'] = shadow.querySelectorAll('.gtx-language')[1].innerHTML;
-
-                if (args['term_lang'] != "en") {
-                  args['target_lang'] = args['term_lang'];
-                  args['term_lang'] = "en";
-                  var tmp = args['term'];
-                  args['term'] = args['definition']
-                  args['definition'] = tmp; 
-                }
-
-                args['target_lang_title'] = get_lang_title(args['target_lang']);
-                args['set_name'] = 'Flash-' + args['target_lang_title'];
-                
                 chrome.runtime.sendMessage({
                   action: "initQuizletSequence",
                   args: args
                 }, function(response) {
                   console.log(response);
-                });
-
+                }); // end chrome.runtime.sendMessage 
               }, 200); // end timeout
 
-            }
-        }
+            } // end if (hasClass)
+        } // end if (mutation.addedNodes)
     });
 });
 
@@ -121,28 +113,14 @@ $("#quizlet-api").click(function(event) {
   if (url.length >= 3) {
     args['term_lang'] = url[0];
     args['target_lang'] = url[1];
-
     args['term'] = decodeURIComponent(url[2]);
-    // args['definition'] = $('#result_box>span').html();
 
     var str_array = [];
     $('#result_box').children().each((i, v) => {
       str_array.push($(v).html()); 
     });
     args['definition'] = str_array.join(" ");
-
-    if (args['term_lang'] != "en") {
-      args['target_lang'] = args['term_lang'];
-      args['term_lang'] = "en";
-      var tmp = args['term'];
-      args['term'] = args['definition']
-      args['definition'] = tmp; 
-    }
-
-    args['target_lang_title'] = get_lang_title(args['target_lang']);
-  }
-
-  args['set_name'] = 'Flash-' + args['target_lang_title'];
+  } // end if (url.length)
 
   chrome.runtime.sendMessage({
     action: "initQuizletSequence",

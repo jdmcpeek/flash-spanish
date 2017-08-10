@@ -6,6 +6,9 @@
   "web_accessible_resources": [
     "help.html"
   ],
+  "icons": {
+    "128": "flash-card-icon.png"
+  },
   "browser_action": {
     "default_title": "Flash Spanish",      // optional; shown in tooltip
     "default_popup": "popup.html"        // optional
@@ -22,7 +25,7 @@
     "http://code.jquery.com/jquery-3.2.1.min.js"
   ],
   "background": {
-    "scripts": ["jquery-3.2.1.min.js", "background.js", "auth.js"]
+    "scripts": ["jquery-3.2.1.min.js", "lang_codes.js", "background.js", "auth.js"]
   },
   "content_scripts": [
     {

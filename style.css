@@ -1,7 +1,16 @@
+h4 {
+  margin: 0px;
+}
+
+p {
+  margin-top: 3px;
+  margin-bottom: 5px;
+}
+
 #quizlet-auth {
   margin-left: auto;
   margin-right: auto;
-  margin-top: 20px;
+  margin-top: 10px;
   width: 60%;
 }
 
@@ -42,10 +51,13 @@ body {
   margin: 5px;
 }
 
+#buffer {
+  height: 25px;
+}
+
 .container {
   border: solid #F5F5F5 2px;
   border-radius: 5px;
-  min-height: 120px;
 }
 
 .wrapper {

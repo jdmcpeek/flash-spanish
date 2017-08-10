@@ -311,6 +311,7 @@ function get_lang_title(code) {
       break;
     default:
       return "Spanish";
+      break;
   }
 }
 

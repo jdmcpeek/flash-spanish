@@ -21,7 +21,7 @@ function get_access_token_from_storage() {
     if (typeof quizlet_token != 'undefined') {
       ACCESS_TOKEN = quizlet_token.access_token;
       USERNAME     = quizlet_token.user_id;
-      console.log(quizlet_token, ACCESS_TOKEN, USERNAME, USER_LANG);  
+      console.log(quizlet_token, ACCESS_TOKEN, USERNAME);  
       chrome.browserAction.setPopup({popup: "authorized.html"});
       var html = $('p#authorized').html() + " as " + USERNAME;
       $('p#authorized').html(html);
@@ -55,7 +55,7 @@ $('#reset-chrome-storage').click(function() {
     // tells background.js to refresh the access token for logout
     chrome.runtime.sendMessage({action: "refresh_access_token"});
 
-    $('#authorized,#quizlet-auth').hide();
+    $('#authorized,#quizlet-auth,#update-language').hide();
     $('.loading').show();
 
     setTimeout(function(){
@@ -72,6 +72,9 @@ $('form#update-language').submit(function() {
     language: $('#preferred-language').val()
   }, function(response) {
     console.log(response);
+    setTimeout(function() {
+      $('label[for=preferred-language]').html("updated! ;)");
+    }, 300);
   });
   return false;
 }); 
