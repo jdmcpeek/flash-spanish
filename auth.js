@@ -53,22 +53,18 @@ function launch_chrome_webAuthFlow (client_id, state) {
             var grant_type = 'authorization_code';
             // perform a request for the access token....
             xmlhttp = make_xmlhttprequest('POST', 'https://api.quizlet.com/oauth/token', true); 
-            xmlhttp.setRequestHeader ("Authorization", "Basic " + btoa(get_quizlet_client_id() + ":" + get_quizlet_client_secret()));
+            xmlhttp.setRequestHeader("Authorization", "Basic " + btoa(get_quizlet_client_id() + ":" + get_quizlet_client_secret()));
             console.log(xmlhttp); 
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                     access_token_string = xmlhttp.responseText.split('&')[0]
                     console.log(access_token_string);
-                    __access_token_string = access_token_string
+                    __access_token_string = access_token_string;
 
                     // Save it using the Chrome extension storage API.
                     chrome.storage.sync.set({'quizlet_access_token': JSON.parse(access_token_string)}, function(data) {
                       // Notify that we saved.
-
-
-                      resolve('settings saved' + data);  
-
-                      
+                      resolve('settings saved' + data);
                     });
                 }
             }

@@ -12,7 +12,6 @@ function get_access_token_from_storage() {
     if (typeof quizlet_token != 'undefined') {
       ACCESS_TOKEN = quizlet_token.access_token;
       USERNAME     = quizlet_token.user_id;
-      console.log(quizlet_token, ACCESS_TOKEN, USERNAME);  
       chrome.browserAction.setPopup({popup: "authorized.html"});
     } else {
       UNAUTHORIZED = true;
@@ -45,7 +44,6 @@ function(request, sender, sendResponse) {
     get_access_token_from_storage();
   }
 
-
   if (UNAUTHORIZED) {
     if (request.action != "authorize") {
       sendResponse("unauthorized request to Quizlet.");
@@ -68,9 +66,9 @@ function(request, sender, sendResponse) {
           });
       }).catch(function(data) {
         // init set with the target words as well
-        var terms = [args.term, "hello"];
-        var definitions = [args.definition, "world"]; 
-        initSet(args.target_lang, ACCESS_TOKEN, terms, definitions)
+        var terms = ["hello", args.term];
+        var definitions = ["world", args.definition]; 
+        initSet(args.target_lang_title, args.target_lang, ACCESS_TOKEN, terms, definitions)
           .then(function(data) {
             console.log(data);
             sendResponse("success: set created. term " + args.term + "added."); 
@@ -108,9 +106,9 @@ function addWordToSet(term, definition, term_lang, access_token, set_id) {
 
 
 
-function initSet(target_lang, access_token, terms=["hello", "hello"], definitions=["world", "world"]) { 
+function initSet(target_lang_title, target_lang_code, access_token, terms=["hello", "hello"], definitions=["world", "world"]) { 
   return new Promise(function(resolve, reject) {
-    var quizlet_set_title = 'Flash-' + target_lang.title;
+    var quizlet_set_title = 'Flash-' + target_lang_title;
     $.ajax({
       url: "https://api.quizlet.com/2.0/sets",
       type: "POST",
@@ -120,11 +118,10 @@ function initSet(target_lang, access_token, terms=["hello", "hello"], definition
         terms: terms,
         definitions: definitions,
         lang_terms: "en",
-        lang_definitions: target_lang.code
+        lang_definitions: target_lang_code
       },
       beforeSend: function(xhr){ console.log(xhr); xhr.setRequestHeader('Authorization', 'Bearer ' + access_token ); }
     }).done(function(data){
-      alert(JSON.stringify(data));
       resolve(data);
     });
   });
@@ -132,6 +129,7 @@ function initSet(target_lang, access_token, terms=["hello", "hello"], definition
 
 
 function checkIfExists(set_name, user_id, access_token) {
+  console.log(access_token, "access_token");
   return new Promise(function(resolve, reject) {
     $.ajax({
       url: "https://api.quizlet.com/2.0/users/" + user_id,
@@ -149,12 +147,14 @@ function checkIfExists(set_name, user_id, access_token) {
           } 
         }
         console.log("motherfucking set doesn't exist");
-        reject("set " + set_name + "doesn't exist");
+        reject("set " + set_name + " doesn't exist");
       } else {
         console.log("motherfucking set doesn't exist ugh");
-        reject("set " + set_name + "doesn't exist");
+        reject("set " + set_name + " doesn't exist");
       }
-    })
+    }).fail(function(error) {
+      console.log("error!", error);
+    });
   });
 }
 
@@ -162,6 +162,7 @@ function checkIfExists(set_name, user_id, access_token) {
 function getSetID(set_name, username, access_token) {
   return new Promise(function(resolve, reject) {
     var query_str = "q=" + set_name + "&creator=" + username;
+    console.log(access_token, "access_token");
     $.ajax({
       url: "https://api.quizlet.com/2.0/search/sets?" + query_str,
       type: "GET",
@@ -174,7 +175,7 @@ function getSetID(set_name, username, access_token) {
       console.log("sets", sets);
       if (sets.length == 0) {
         console.log("length is 0, sorry");
-        checkIfExists(set_name, username)
+        checkIfExists(set_name, username, access_token)
           .then(function(data) {
             console.log("totally existed", set_name);
             console.log("id", data);
