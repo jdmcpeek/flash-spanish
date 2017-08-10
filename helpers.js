@@ -9,7 +9,6 @@ $('#quizlet-auth>input').click(function() {
   chrome.runtime.sendMessage({action: "authorize"}, function(response) {
     console.log("got response from authorize, helpers.js", response);
   });
-
 });
 
 
@@ -22,21 +21,30 @@ function get_access_token_from_storage() {
     if (typeof quizlet_token != 'undefined') {
       ACCESS_TOKEN = quizlet_token.access_token;
       USERNAME     = quizlet_token.user_id;
-      console.log(quizlet_token, ACCESS_TOKEN, USERNAME);  
+      console.log(quizlet_token, ACCESS_TOKEN, USERNAME, USER_LANG);  
       chrome.browserAction.setPopup({popup: "authorized.html"});
       var html = $('p#authorized').html() + " as " + USERNAME;
       $('p#authorized').html(html);
+
     } else {
       UNAUTHORIZED = true;
       console.log("none exists.");
       chrome.browserAction.setPopup({popup: "popup.html"});
     }
   });
+
+  chrome.storage.sync.get("user_language", function(res) {
+    if (res.user_language) {
+      USER_LANG = res.user_language;
+    } else {
+      USER_LANG = "en";
+    }
+    console.log("user lang", USER_LANG);
+    $('form#update-language select').val(USER_LANG);      
+  });
 }
 
 get_access_token_from_storage();
-
-
 
 // LOGOUT
 $('#reset-chrome-storage').click(function() {
@@ -44,7 +52,6 @@ $('#reset-chrome-storage').click(function() {
   chrome.storage.sync.clear(function(data) {
     console.log('storage cleared.');
     chrome.browserAction.setPopup({popup: "popup.html"});
-
     // tells background.js to refresh the access token for logout
     chrome.runtime.sendMessage({action: "refresh_access_token"});
 
@@ -59,8 +66,17 @@ $('#reset-chrome-storage').click(function() {
   })
 });  
 
+$('form#update-language').submit(function() {
+  chrome.runtime.sendMessage({
+    action: "update_language_preferences",
+    language: $('#preferred-language').val()
+  }, function(response) {
+    console.log(response);
+  });
+  return false;
+}); 
 
-console.log("fuck you");
+
 // refresh browser UI to uncover the button
 chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
   console.log("getting tabs from helpers.js...");

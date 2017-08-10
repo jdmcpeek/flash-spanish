@@ -3,6 +3,7 @@ console.log("background.js");
 // ACCESS TOKEN NEEDED IN THIS FILE - which is why we refresh
 
 
+// store quizlet data here as well
 function get_access_token_from_storage() {
   console.log("getting access token from storage...");
   chrome.storage.sync.get("quizlet_access_token", function(res) {
@@ -19,6 +20,16 @@ function get_access_token_from_storage() {
       chrome.browserAction.setPopup({popup: "popup.html"});
     }
   });
+
+  chrome.storage.sync.get("user_language", function(res) {
+    if (res.user_language) {
+      USER_LANG = res.user_language;
+    } else {
+      USER_LANG = "en"; 
+    }
+    console.log("user lang", USER_LANG);
+
+  });
   
   // refresh browser UI to uncover the button
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
@@ -34,10 +45,9 @@ function get_access_token_from_storage() {
 get_access_token_from_storage();
 
 
-
 chrome.runtime.onMessage.addListener(
 function(request, sender, sendResponse) {
-  console.log("in background.js listener");
+  console.log("in background.js listener", request);
 
   if (request.action == "refresh_access_token") {
     console.log("refreshing the access token");
@@ -54,6 +64,8 @@ function(request, sender, sendResponse) {
   console.log(JSON.stringify(request));
 
   if (request.action == 'initQuizletSequence') {
+    // getSetID shouldn't use set_name.
+    // it should take term/definition in the order they were received.
     getSetID(args.set_name, USERNAME, ACCESS_TOKEN)
       .then(function(set_id) {
         addWordToSet(args.term, args.definition, args.term_lang, ACCESS_TOKEN, set_id)
@@ -77,10 +89,18 @@ function(request, sender, sendResponse) {
             console.log(reason);
           });
       });
-  } 
-
+  } else if (request.action == 'update_language_preferences') {
+    chrome.storage.sync.set({'user_language': request.language}, function() {
+      sendResponse("language preference set");
+    });
+    USER_LANG = request.language;
+  }
   return true;
 });
+
+
+// will need to order the term/definition by the preexisting set preferences.
+// that will require a lookup. will also be able to store that somewhere. but sometimes will need updates.
 
 function addWordToSet(term, definition, term_lang, access_token, set_id) {
   return new Promise(function(resolve, reject) {
@@ -106,6 +126,7 @@ function addWordToSet(term, definition, term_lang, access_token, set_id) {
 
 
 
+// need to determine the correct term/definition languages.
 function initSet(target_lang_title, target_lang_code, access_token, terms=["hello", "hello"], definitions=["world", "world"]) { 
   return new Promise(function(resolve, reject) {
     var quizlet_set_title = 'Flash-' + target_lang_title;
@@ -128,6 +149,11 @@ function initSet(target_lang_title, target_lang_code, access_token, terms=["hell
 }
 
 
+
+
+// need to add both target and src languages as arguments. 
+// search for both target and source.
+// if the target/source exists as 'Flash-LANG', then return that set
 function checkIfExists(set_name, user_id, access_token) {
   console.log(access_token, "access_token");
   return new Promise(function(resolve, reject) {

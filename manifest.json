@@ -27,7 +27,7 @@
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*", "http://code.jquery.com/jquery-3.2.1.min.js"],
-      "js": ["jquery-3.2.1.min.js", "translate.js"], 
+      "js": ["jquery-3.2.1.min.js", "lang_codes.js", "translate.js"], 
       "run_at": "document_end"
     }
   ]

@@ -36,13 +36,13 @@ function get_lang_title(code) {
     case "ca":
       return "Catalan";
       break;
-    case "ceb (ISO-639-2)":
+    case "ceb":
       return "Cebuano";
       break;
-    case "zh-CN (BCP-47)":
+    case "zh-CN":
       return "Chinese (Simplified)";
       break;
-    case "zh-TW (BCP-47)":
+    case "zh-TW":
       return "Chinese (Traditional)";
       break;
     case "co":
@@ -99,7 +99,7 @@ function get_lang_title(code) {
     case "ha":
       return "Hausa";
       break;
-    case "haw (ISO-639-2)": 
+    case "haw": 
      return "Hawaiian" ;
      break;
     case "iw":
@@ -108,7 +108,7 @@ function get_lang_title(code) {
     case "hi":
       return "Hindi";
       break;
-    case "hmn (ISO-639-2)":
+    case "hmn":
       return "Hmong";
       break;
     case "hu":
@@ -314,6 +314,4 @@ function get_lang_title(code) {
   }
 }
 
-
-console.log(get_lang_title("cy")); 
 

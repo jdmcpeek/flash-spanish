@@ -45,7 +45,7 @@ body {
 .container {
   border: solid #F5F5F5 2px;
   border-radius: 5px;
-  min-height: 80px;
+  min-height: 120px;
 }
 
 .wrapper {
