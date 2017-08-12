@@ -3,11 +3,18 @@
 // 2. send a message that will enable use of the api
 
 // actual DOM insertions
-var quizlet_button = "<div id='quizlet-api' style='display:none;'> \
+var quizlet_button = "<div id='quizlet-api' style='display:none; float: left;'> \
                         <input type='button' value='Add to Quizlet' \
                         class='jfk-button jfk-button-action' /></div>";
 
 $(quizlet_button).insertAfter($('#gt-appname'));
+
+var loading = "<div class='loading' style='display: none; float: left; margin-top:-6px;'>" + 
+                  "<p id='text'>Loading...</p>" +
+                "</div>";
+
+$(loading).insertAfter('#quizlet-api');
+
 
 
 chrome.runtime.onMessage.addListener(
@@ -32,7 +39,7 @@ function get_access_token_from_storage() {
       quizlet_token = res.quizlet_access_token;
       console.log(quizlet_token);
       if (typeof quizlet_token != 'undefined') {
-        $('#quizlet-api').show();
+        $('#quizlet-api').css("display", "inline-block");
       } else {
         console.log("none exists.");
         $('#quizlet-api').hide();
@@ -102,6 +109,8 @@ observer.observe(document.body, config);
 
 $("#quizlet-api").click(function(event) {
 
+  $('.loading').show();
+
   var url = $(location).attr('href');
   url = url.replace(/https:\/\/translate.google.com\/?\??#?/, "");
   url = url.split("/");
@@ -127,6 +136,28 @@ $("#quizlet-api").click(function(event) {
     args: args
   }, function(response) {
     console.log(response);
+
+    var response_txt;
+
+    // slide button out...
+    if (response == true) {
+      // success!
+      response_txt = "Success! Term added to set.";
+    } else {
+      // failure...
+      response_txt = "Something went wrong. We are so, so sorry :'(";
+    }
+
+    $('.loading #text').html(response_txt);
+
+    setTimeout(function() {
+      $('.loading').toggle('slide', {direction: 'left'}, 400, function() {
+        $('.loading #text').html("Loading...");
+      });
+      
+    }, 3000);
+
+
   });
   
 

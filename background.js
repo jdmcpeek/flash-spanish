@@ -32,10 +32,11 @@ function(request, sender, sendResponse) {
         addWordToSet(args.term, args.definition, ACCESS_TOKEN, set_id)
           .then(function(data) { 
             console.log(data);
-            sendResponse("success: term " + args.term + "added to set.");
+            sendResponse(true);
           })
           .catch(function(reason){
             console.log(reason);
+            sendResponse(false);
           });
       }).catch(function(data) {
         // initializing terms
@@ -46,10 +47,11 @@ function(request, sender, sendResponse) {
         initSet(args, ACCESS_TOKEN, init_terms, init_definitions)
           .then(function(data) {
             console.log(data);
-            sendResponse("success: set created. term " + args.term + "added."); 
+            sendResponse(true); 
           })
           .catch(function(reason){
             console.log(reason);
+            sendResponse(false);
           });
       });
   } else if (request.action == 'update_language_preferences') {

@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Flash Spanish",
   "description": "Translates words and uploads to Quizlet",
-  "version": "1.0",
+  "version": "0.1",
   "web_accessible_resources": [
     "help.html"
   ],
@@ -10,8 +10,8 @@
     "128": "flash-card-icon.png"
   },
   "browser_action": {
-    "default_title": "Flash Spanish",      // optional; shown in tooltip
-    "default_popup": "popup.html"        // optional
+    "default_title": "Flash Spanish",
+    "default_popup": "popup.html"
   },
   "permissions": [
     "identity", "storage", "tabs", "background", "webRequest", "management",
@@ -30,7 +30,11 @@
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*", "http://code.jquery.com/jquery-3.2.1.min.js"],
-      "js": ["jquery-3.2.1.min.js", "lang_codes.js", "translate.js"], 
+      "js": [
+        "jquery-3.2.1.min.js", 
+        "jquery-ui.min.js",
+        "lang_codes.js", 
+        "translate.js"], 
       "run_at": "document_end"
     }
   ]
