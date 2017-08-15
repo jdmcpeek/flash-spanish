@@ -75,8 +75,8 @@ function launch_chrome_webAuthFlow (client_id, state) {
 
 }
 
-// authorization entrypoint.
-// received from helpers.js on pressing the "Authorize Quizlet" button.
+// Authorization entrypoint.
+// Received from helpers.js on pressing the "Authorize Quizlet" button.
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action == "authorize") {
     launch_chrome_webAuthFlow(get_quizlet_client_id(), Math.random() + '')

@@ -149,12 +149,10 @@ function filter_and_order_lang_terms(args) {
     args.set_name = 'Flash-' + get_lang_title(args.target_lang); 
   } else {
     // enforce an order...
-    if (args.target_lang < args.term_lang) {
+    if (get_lang_title(args.target_lang) < get_lang_title(args.term_lang)) {
       reverse_order(args);
-      args.set_name = 'Flash-' + get_lang_title(args.target_lang) + '-' + get_lang_title(args.term_lang);
-    } else {
-      args.set_name = 'Flash-' + get_lang_title(args.term_lang) + '-' + get_lang_title(args.target_lang);
     } // end if
+    args.set_name = 'Flash-' + get_lang_title(args.term_lang) + '-' + get_lang_title(args.target_lang);
   } // end if 
 }
 
