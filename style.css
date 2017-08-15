@@ -15,7 +15,6 @@ p {
 }
 
 #quizlet-api input, #quizlet-auth input {
-  /*margin-left: 1em;*/
   background-color: #4d90fe;
   background-image: -webkit-linear-gradient(top,#4d90fe,#4787ed);
   border: 1px solid #3079ed;
@@ -72,10 +71,12 @@ body {
   margin-top: 20px;
   text-align: center;
 }
+
 .loading {
   text-align: center;
 }
 
+/* spinning loader */
 #loader {
     border: 10px solid #f3f3f3; /* Light grey */
     border-top: 10px solid #3498db; /* Blue */
@@ -85,6 +86,7 @@ body {
     animation: spin 0.5s linear infinite;
 }
 
+/* spinning loading icon effect */
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }

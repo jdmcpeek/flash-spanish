@@ -6,7 +6,6 @@
   <script src="jquery-3.2.1.min.js"></script>
   <link rel="stylesheet" type="text/css" href="./style.css">
   <style>
-
     label {
       font-size: 10px;
     }
@@ -23,10 +22,8 @@
 <div class='container'>
   <h4><i>Flash Spanish</i></h4>
   <p id='authorized'>Authorized Quizlet</p>
-
   <form id="update-language" action="#">
     <label for="preferred-language">Your language</label><br>
-    <!-- <input type="text" value="English" name="preferred-language"> -->
     <select id="preferred-language">
       <option value="en">English</option>
       <option value="es">Spanish</option>
@@ -134,14 +131,13 @@
     </select>
     <input type="submit" value="Update">
   </form>
-
   <div class="loading" style="display: none;">
     <div class='wrapper'>
       <div id="loader"></div>
     </div>
     <p>Loading...</p>
   </div>
-  <a id="help-link" href="chrome-extension://kocjdheiokihandfdimbdlfhclcjfcof/help.html">Help!</a>
+  <a id="help-link" href="help.html">Help!</a>
   <a id="reset-chrome-storage" href="#">Log out</a>
   <div id="buffer"></div>
 </div>

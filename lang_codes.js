@@ -1,3 +1,10 @@
+/**
+ * lang_codes.js
+ *
+ * Returns the full language name for a Google Translate language code.
+ * Defaults to Spanish.
+ */
+
 function get_lang_title(code) {
   switch(code) {
     case "af":
